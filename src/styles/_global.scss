@@ -1,0 +1,7 @@
+@use "./variables" as v;
+
+body, html {
+    background-color: v.$color-background;
+    font-family: v.$font-base;
+    color: v.$color-text-dark;
+}

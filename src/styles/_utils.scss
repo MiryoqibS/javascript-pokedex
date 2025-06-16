@@ -1,0 +1,80 @@
+@use "./variables" as v;
+
+.container {
+    width: 100%;
+    max-width: calc(v.$container-width + (v.$container-padding-x * 2));
+    margin-inline: auto;
+    position: relative;
+}
+
+.normal {
+    background-color: v.$color-normal;
+}
+
+.fire {
+    background-color: v.$color-fire;
+}
+
+.water {
+    background-color: v.$color-water;
+}
+
+.electric {
+    background-color: v.$color-electric;
+}
+
+.grass {
+    background-color: v.$color-grass;
+}
+
+.ice {
+    background-color: v.$color-ice;
+}
+
+.fighting {
+    background-color: v.$color-fighting;
+}
+
+.poison {
+    background-color: v.$color-poison;
+}
+
+.ground {
+    background-color: v.$color-ground;
+}
+
+.flying {
+    background-color: v.$color-flying;
+}
+
+.psychic {
+    background-color: v.$color-psychic;
+}
+
+.bug {
+    background-color: v.$color-bug;
+}
+
+.rock {
+    background-color: v.$color-rock;
+}
+
+.ghost {
+    background-color: v.$color-ghost;
+}
+
+.dragon {
+    background-color: v.$color-dragon;
+}
+
+.dark {
+    background-color: v.$color-dark;
+}
+
+.steel {
+    background-color: v.$color-steel;
+}
+
+.fairy {
+    background-color: v.$color-fairy;
+}

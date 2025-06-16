@@ -1,0 +1,189 @@
+@use "./variables" as v;
+
+.pokedex {
+    display: grid;
+    grid-template-areas:
+        "header header sidebar"
+        "grid grid sidebar";
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+    margin-block: 20px;
+
+    &-header {
+        display: flex;
+        flex-direction: column;
+        grid-area: header;
+
+        &__search {
+            font-size: 20px;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: v.$shadow;
+        }
+
+    }
+
+    &-sidebar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 25px;
+        background-color: v.$color-light;
+        grid-area: sidebar;
+        border-radius: 20px;
+        box-shadow: v.$shadow;
+        position: relative;
+        padding: 10px 15px;
+
+        &__image {
+            width: 50%;
+            min-width: 128px;
+        }
+
+        &__description {
+            display: flex;
+            flex-direction: column;
+            row-gap: 20px;
+            text-align: center;
+
+            h3 {
+                text-transform: uppercase;
+                font-weight: 700;
+            }
+
+            p {
+                letter-spacing: 1px;
+            }
+        }
+
+        &__abilities {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+
+            h3 {
+                grid-column: span 2;
+                text-align: center;
+                font-size: 18px;
+                color: v.$color-text-light;
+                font-weight: 600;
+            }
+        }
+
+        &__ability {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-block: 10px;
+            column-gap: 10px;
+            border-radius: 20px;
+            border: 1px solid v.$color-accent-blue;
+            background-color: v.$color-background;
+            color: v.$color-text-light;
+            font-weight: 700;
+
+            &.hidden {
+                border: 1px solid v.$color-accent-red;
+            }
+        }
+
+        &__information {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            width: 100%;
+            gap: 20px;
+        }
+
+        &__stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            row-gap: 20px;
+
+            h3 {
+                text-align: center;
+                font-size: 18px;
+                color: v.$color-text-light;
+                font-weight: 600;
+            }
+
+            span {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                padding-block: 15px;
+                column-gap: 5px;
+                border-radius: 20px;
+                width: 100%;
+                background-color: v.$color-background;
+                color: v.$color-text-light;
+                font-weight: 700;
+            }
+
+            img {
+                width: 16px;
+                object-fit: cover;
+            }
+        }
+    }
+
+    &-grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        grid-area: grid;
+    }
+
+    &-card {
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+        align-items: center;
+        background-color: v.$color-light;
+        border-radius: 15px;
+        padding: 20px 10px;
+        box-shadow: v.$shadow;
+        transition: all .4s ease;
+        cursor: pointer;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        &.active {
+            border: 2px solid v.$color-accent-blue;
+            box-shadow: 0 0 10px rgba(78, 145, 249, 0.5);
+            transform: scale(1.02);
+        }
+
+        &__image {
+            object-fit: cover;
+        }
+
+        &__id {
+            margin-top: auto;
+        }
+
+        &__name {
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        &__types {
+            display: flex;
+            align-items: center;
+            column-gap: 10px;
+        }
+
+        &__type {
+            padding: 4px 8px;
+            border-radius: 2px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+    }
+}
