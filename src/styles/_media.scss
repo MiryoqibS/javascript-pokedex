@@ -1,0 +1,35 @@
+// Breakpoints
+$laptop: 1024px;
+$tablet: 768px;
+$mobileL: 425px;
+$mobile: 375px;
+
+@mixin laptop {
+    @media all and (max-width: $laptop) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media all and (max-width: $tablet) {
+        @content;
+    }
+}
+
+@mixin mobileL {
+    @media all and (max-width: $mobileL) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media all and (max-width: $mobile) {
+        @content;
+    }
+}
+
+@mixin custom-responsive($width) {
+    @media all and (max-width: $width) {
+        @content;
+    }
+}

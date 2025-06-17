@@ -18,7 +18,6 @@ export class RenderCard {
         const image = document.createElement("img");
         image.src = this.imageUrl;
         image.className = "pokedex-card__image";
-        image.style.height = `${64 + this.height * 3}px`
 
         const id = document.createElement("p");
         id.className = "pokedex-card__id";

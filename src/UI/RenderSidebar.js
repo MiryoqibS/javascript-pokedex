@@ -9,20 +9,14 @@ export class RenderSidebar {
         const sidebar = document.createElement("aside");
         sidebar.className = "pokedex-sidebar";
 
-        const image = this.pokemonImage(pokemonInfo);
-        const id = this.pokemonId(pokemonInfo);
-        const name = this.pokemonName(pokemonInfo);
-        const types = this.pokemonTypes(pokemonInfo);
+        const closeButton = this.sidebarCloseButton();
+        const header = await this.sidebarHeader(pokemonInfo);
         const abilities = this.pokemonAbilities(pokemonInfo);
-        const pokedexEntry = await this.pokedexEntry(pokemonInfo);
         const information = await this.pokemonInformation(pokemonInfo);
 
         // Добавляем дочерние элементы в sidebar 
-        sidebar.appendChild(image);
-        sidebar.appendChild(id);
-        sidebar.appendChild(name);
-        sidebar.appendChild(types);
-        sidebar.appendChild(pokedexEntry);
+        sidebar.appendChild(closeButton);
+        sidebar.appendChild(header);
         sidebar.appendChild(abilities);
         sidebar.appendChild(information);
 
@@ -31,31 +25,66 @@ export class RenderSidebar {
 
     async update(pokemonInfo) {
         // Изображения покемона
-        const oldImage = document.querySelector(".pokedex-sidebar__image");
-        const oldId = document.querySelector(".pokedex-sidebar__id");
-        const oldName = document.querySelector(".pokedex-sidebar__name");
-        const oldTypes = document.querySelector(".pokedex-sidebar__types");
-        const oldPokedexEntry = document.querySelector(".pokedex-sidebar__description");
+        const oldHeader = document.querySelector(".pokedex-sidebar__header");
         const oldAbilities = document.querySelector(".pokedex-sidebar__abilities");
         const oldInformation = document.querySelector(".pokedex-sidebar__information");
 
-        if (oldImage) {
-            const newImage = this.pokemonImage(pokemonInfo);
-            const newId = this.pokemonId(pokemonInfo);
-            const newName = this.pokemonName(pokemonInfo);
-            const newTypes = this.pokemonTypes(pokemonInfo);
-            const newPokedexEntry = await this.pokedexEntry(pokemonInfo);
+        if (oldHeader) {
+            const newHeader = await this.sidebarHeader(pokemonInfo);
             const newAbilities = this.pokemonAbilities(pokemonInfo);
             const newInformation = await this.pokemonInformation(pokemonInfo);
 
-            oldImage.replaceWith(newImage);
-            oldId.replaceWith(newId);
-            oldName.replaceWith(newName);
-            oldTypes.replaceWith(newTypes);
-            oldPokedexEntry.replaceWith(newPokedexEntry);
+            oldHeader.replaceWith(newHeader);
             oldAbilities.replaceWith(newAbilities);
             oldInformation.replaceWith(newInformation);
         };
+    }
+
+    // Заголовок 
+    async sidebarHeader(pokemonInfo) {
+        const header = document.createElement("header");
+        header.className = "pokedex-sidebar__header";
+
+        const image = this.pokemonImage(pokemonInfo);
+
+        const list = document.createElement("div");
+        list.className = "pokedex-sidebar__list";
+
+        const id = this.pokemonId(pokemonInfo);
+        const name = this.pokemonName(pokemonInfo);
+        const types = this.pokemonTypes(pokemonInfo);
+        const pokedexEntry = await this.pokedexEntry(pokemonInfo);
+
+        list.appendChild(id);
+        list.appendChild(name);
+        list.appendChild(types);
+        list.appendChild(pokedexEntry);
+
+        header.appendChild(image);
+        header.appendChild(list);
+
+        return header;
+    }
+
+    // Кнопка для закрытия боковой панели
+    sidebarCloseButton() {
+        const button = document.createElement("button");
+        button.className = "pokedex-sidebar__close";
+
+        const span = document.createElement("span");
+
+        button.appendChild(span);
+        button.appendChild(span.cloneNode());
+
+        button.addEventListener("click", () => {
+            const sidebar = document.querySelector(".pokedex-sidebar");
+
+            if (sidebar) {
+                sidebar.classList.remove("active");
+            };
+        })
+
+        return button;
     }
 
     // Изображение покемона
