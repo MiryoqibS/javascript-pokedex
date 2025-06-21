@@ -35,7 +35,9 @@ export class RenderGrid {
             card.addEventListener("click", () => {
                 if (!card.classList.contains("active")) {
                     const prevActiveCard = document.querySelector(".pokedex-card.active");
-                    prevActiveCard.classList.remove("active");
+                    if (prevActiveCard) {
+                        prevActiveCard.classList.remove("active");
+                    };
                     card.classList.add("active");
                     this.selectActive(pokemon);
 

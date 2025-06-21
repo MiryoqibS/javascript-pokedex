@@ -17,4 +17,10 @@ export class FetchPokemons {
 
         return pokemons;
     }
+
+    async fetchPokemonsNames() {
+        const res = await fetch(`${this.api}pokemon?limit=1025&offset=0`);
+        const data = await res.json();
+        return data.results;
+    }
 }

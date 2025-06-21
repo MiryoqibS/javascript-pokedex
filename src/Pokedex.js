@@ -8,26 +8,28 @@ export class Pokedex {
     constructor(container) {
         this.container = container;
         this.pokemons = [];
+        this.pokemonForLoad = [];
         this.activePokemon = null;
         this.offset = 0;
         this.limit = 12;
         this.fetcherPokemons = new FetchPokemons();
-        this.pokemonMaxCount = 1005;
+        this.pokemonMaxCount = 1025;
+        this.pokemonsNames = null;
 
         // Объекты для рендеринга компонентов
-        this.renderSearchBar = new RenderSearchBar();
         this.renderGrid = new RenderGrid(this.selectActive.bind(this));
         this.renderSidebar = new RenderSidebar();
-        this.renderLoadMore = new RenderLoadMore(this.#getPokemons.bind(this));
+        this.renderSearchBar = new RenderSearchBar(this.#getPokemonsNames.bind(this), this.renderSidebar.update.bind(this.renderSidebar));
+        this.renderLoadMore = new RenderLoadMore(this.renderGrid, this.#loadPokemons.bind(this));
     }
 
     async render() {
         // Получаем покемонов
-        await this.#getPokemons();
+        await this.#loadPokemons();
         this.selectActive(this.pokemons[0]);
 
         // Рендеринг компонентов
-        const searchBar = this.renderSearchBar.render();
+        const searchBar = await this.renderSearchBar.render();
         const grid = this.renderGrid.render(this.pokemons);
         const sidebar = await this.renderSidebar.render(this.activePokemon);
         const pagination = await this.renderLoadMore.render();
@@ -42,21 +44,23 @@ export class Pokedex {
 
         // Добавляем покедекс в основной контейнер
         this.container.appendChild(pokedex)
+
+        if (!this.pokemonsNames) {
+            this.pokemonsNames = await this.fetcherPokemons.fetchPokemonsNames();
+            console.log(this.pokemonsNames);
+            
+        }
     }
 
-    async #getPokemons() {
-        const grid = document.querySelector(".pokedex-grid");
-
+    async #loadPokemons() {
         const pokemons = await this.fetcherPokemons.fetch(this.offset, this.limit);
         this.pokemons.push(...pokemons);
-        console.log(this.pokemons);
-
         this.offset += this.limit;
+        return pokemons;
+    }
 
-        if (grid) {
-            this.renderGrid.renderPokemons(pokemons, grid);
-        };
-
+    #getPokemonsNames() {
+        return this.pokemonsNames;
     }
 
     selectActive(pokemon) {
