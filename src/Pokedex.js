@@ -1,7 +1,7 @@
 import { RenderSearchBar } from "./UI/RenderSearchBar.js";
 import { RenderGrid } from "./UI/RenderGrid.js";
 import { RenderSidebar } from "./UI/RenderSidebar.js";
-import { FetchPokemons } from "./api/fetchPokemons.js";
+import { PokemonService } from "./api/PokemonService.js";
 import { RenderLoadMore } from "./UI/RenderLoadMore.js";
 
 export class Pokedex {
@@ -12,7 +12,7 @@ export class Pokedex {
         this.activePokemon = null;
         this.offset = 0;
         this.limit = 12;
-        this.fetcherPokemons = new FetchPokemons();
+        this.pokemonApi = new PokemonService();
         this.pokemonMaxCount = 1025;
         this.pokemonsNames = null;
 
@@ -30,6 +30,8 @@ export class Pokedex {
 
         // Рендеринг компонентов
         const searchBar = await this.renderSearchBar.render();
+        console.log(this.pokemons);
+        
         const grid = this.renderGrid.render(this.pokemons);
         const sidebar = await this.renderSidebar.render(this.activePokemon);
         const pagination = await this.renderLoadMore.render();
@@ -46,14 +48,14 @@ export class Pokedex {
         this.container.appendChild(pokedex)
 
         if (!this.pokemonsNames) {
-            this.pokemonsNames = await this.fetcherPokemons.fetchPokemonsNames();
+            this.pokemonsNames = await this.pokemonApi.fetchPokemonsNames();
             console.log(this.pokemonsNames);
             
         }
     }
 
     async #loadPokemons() {
-        const pokemons = await this.fetcherPokemons.fetch(this.offset, this.limit);
+        const pokemons = await this.pokemonApi.fetchPokemons(this.offset, this.limit);
         this.pokemons.push(...pokemons);
         this.offset += this.limit;
         return pokemons;

@@ -1,3 +1,4 @@
+import { axiosClient } from "../api/axiosClient.js";
 import { Helper } from "../utils/Helpers";
 
 export class RenderSearchBar {
@@ -6,7 +7,6 @@ export class RenderSearchBar {
         this.updateSidebar = updateSidebar;
         this.debounceTimer = null;
         this.helper = new Helper();
-        this.api = "https://pokeapi.co/api/v2/";
     }
 
     async render() {
@@ -19,24 +19,25 @@ export class RenderSearchBar {
         const searchInput = document.createElement("input");
         searchInput.addEventListener("input", () => {
             clearTimeout(this.debounceTimer);
+            const value = searchInput.value.trim().toLocaleLowerCase();
 
             this.debounceTimer = setTimeout(async () => {
-                const value = searchInput.value.trim().toLocaleLowerCase();
 
-                if (value.length <= 0) {
+                if (value.length === 0) {
                     searchResult.innerHTML = "";
                     searchResult.classList.add("hide");
+                    return;
                 };
 
-                if (!isNaN(value)) {
+                if (!isNaN(value) && Number(value) > 0) {
                     searchResult.innerHTML = "";
 
                     // Поиск по id
                     try {
-                        const response = await fetch(`${this.api}/pokemon/${Number(value)}`);
-                        if (!response) throw new Error('Not found...');
+                        const data = await axiosClient.get(`pokemon/${Number(value)}`);
+                        console.log(data);
 
-                        const data = await response.json();
+                        if (!data) throw new Error('Not found...');
 
                         const searchVariant = document.createElement("p");
                         searchVariant.className = "pokedex-header__variant";
@@ -101,8 +102,8 @@ export class RenderSearchBar {
     }
 
     async #updateSidebar(value) {
-        const response = await fetch(`${this.api}/pokemon/${value}`);
-        const pokemonInfo = await response.json();
+        const data = await axiosClient.get(`pokemon/${value}`);
+        const pokemonInfo = data;
         const activePokemon = document.querySelector(".pokedex-card.active");
         if (activePokemon) {
             activePokemon.classList.remove("active");

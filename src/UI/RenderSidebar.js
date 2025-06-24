@@ -1,3 +1,4 @@
+import { axiosClient } from "../api/axiosClient.js";
 import { Helper } from "../utils/Helpers";
 
 export class RenderSidebar {
@@ -89,6 +90,8 @@ export class RenderSidebar {
 
     // Изображение покемона
     pokemonImage(pokemonInfo) {
+        console.log(pokemonInfo);
+        
         const image = document.createElement("img");
         image.className = "pokedex-sidebar__image";
         const pokemonSprites = pokemonInfo.sprites.other["official-artwork"];
@@ -133,8 +136,7 @@ export class RenderSidebar {
 
     // Описание в покедексe
     async pokedexEntry(pokemonInfo) {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonInfo.id}`);
-        const data = await response.json();
+        const data = await axiosClient.get(`pokemon-species/${pokemonInfo.id}`);
         const englishEntry = data.flavor_text_entries.find(entry => entry.language.name === "en")
 
         const pokedexEntry = document.createElement("div");
@@ -198,8 +200,8 @@ export class RenderSidebar {
         weaknessTypes.id = "pokemonWeaknessFrom";
 
         pokemonInfo.types.forEach(async (type) => {
-            const response = await fetch(type.type.url);
-            const data = await response.json();
+            const data = await axiosClient.get(type.type.url.replace("https://pokeapi.co/api/v2/", ""));
+
             const weaknessFrom = data.damage_relations.double_damage_from;
             weaknessFrom.forEach(type => {
                 const image = document.createElement("img");
